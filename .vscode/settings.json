@@ -1,0 +1,15 @@
+{
+    // Point IntelliSense at your TS config file
+    "tailwindCSS.experimental.configFile": "tailwind.config.ts",
+  
+    // Treat .css as Tailwind-aware (so @tailwind/@apply are recognized)
+    "files.associations": {
+      "*.css": "tailwindcss"
+    },
+  
+    // (Optional) Silence built-in CSS rule warnings without disabling IntelliSense
+    "css.lint.unknownAtRules": "ignore",
+    "scss.lint.unknownAtRules": "ignore",
+    "less.lint.unknownAtRules": "ignore"
+  }
+  
