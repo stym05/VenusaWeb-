@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0%" stop-color="#111113"/>
+      <stop offset="100%" stop-color="#1C191A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#g)"/>
+  <g fill="none" stroke="#C7A756" stroke-width="6" opacity="0.9">
+    <rect x="80" y="80" width="1040" height="1440" rx="40"/>
+    <path d="M400 240 h400"/>
+    <path d="M350 1380 h500"/>
+    <circle cx="600" cy="800" r="300"/>
+  </g>
+  <text x="50%" y="50%" fill="#fff" font-size="56" font-family="Arial" text-anchor="middle">
+    VENUSA — Product Visual
+  </text>
+</svg>
