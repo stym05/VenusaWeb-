@@ -3,22 +3,37 @@
 export default function VideoBanner() {
   return (
     <div className="relative w-full h-[92vh] overflow-hidden">
+      {/* 🖥️ Desktop Video */}
       <video
-        className="absolute inset-0 w-full h-full object-fill"
+        className="hidden md:block absolute inset-0 w-full h-full object-cover"
         autoPlay
         muted
         loop
         playsInline
         preload="auto"
-        style={{ pointerEvents: "none" }}
-        poster="/videos/hero-poster.jpg"
+        style={{ pointerEvents: 'none' }}
+        poster="/videos/hero-desktop-poster.jpg"
       >
-        <source src="/videos/hero.webm" type="video/webm" />
-        <source src="/videos/hero.mp4" type="video/mp4" />
+        <source src="/videos/hero-desktop.webm" type="video/webm" />
+        <source src="/videos/hero-desktop.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
-      {/* Removed gradient overlay for a clean look */}
+      {/* 📱 Mobile Video */}
+      <video
+        className="block md:hidden absolute inset-0 w-full h-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        style={{ pointerEvents: 'none' }}
+        poster="/videos/hero-mobile-poster.jpg"
+      >
+        <source src="/videos/hero-mobile.webm" type="video/webm" />
+        <source src="/videos/hero-mobile.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
     </div>
   )
 }

@@ -58,7 +58,7 @@ export default function TermsContent() {
       <Section id="Shipping & Delivery" title="7. Shipping & Delivery">
         <ul>
           <li>Shipping across most serviceable PIN codes in India.</li>
-          <li>Typical delivery: <strong>3–7 business days</strong> (estimate).</li>
+          <li>Typical delivery: <strong>4–8 business days</strong> (estimate).</li>
           <li>Tracking shared on dispatch; charges shown at checkout.</li>
           <li>Delays due to factors beyond control are not our liability.</li>
         </ul>
@@ -140,10 +140,10 @@ function Section({
       variants={fadeUp}
       className="scroll-mt-28 mb-10"
     >
-      <h2 className="font-body text-2xl font-semibold mb-3 text-white">{title}</h2>
+      <h2 className="font-body text-[14px] font-regular mb-3 text-white">{title}</h2>
 
       {/* apply inverted prose directly to the content to guarantee dark-theme colors */}
-      <div className="prose prose-invert prose-headings:text-white prose-p:text-white/80 prose-li:text-white/80 prose-a:underline">
+      <div className="text-[13px] font-regular prose prose-invert prose-headings:text-white prose-p:text-white/80 text-[13px] prose-li:text-white/80 prose-a:underline">
         {children}
       </div>
     </motion.section>

@@ -15,7 +15,7 @@ export default function TermsPage() {
           Terms & Conditions
         </h1>
         <p className="mt-2 text-white/70">
-          Last updated: <span className="text-white font-medium">[October 11, 2025]</span>
+          Last updated: <span className="text-white font-regular">[October 11, 2025]</span>
         </p>
 
         {/* … your nav … */}
