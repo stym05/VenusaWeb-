@@ -1,0 +1,188 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // If you're using Neon and set a direct connection:
+  // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+/**
+ * ---------- CATALOG ----------
+ */
+
+model Product {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  title       String
+  subtitle    String?
+  description String?
+  pricePaise  Int // store ₹ in paise
+
+  images ProductImage[]
+  sizes  ProductSize[] // join (ordered)
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  OrderItem OrderItem[]
+}
+
+model ProductImage {
+  id    String @id @default(cuid())
+  url   String
+  order Int    @default(0)
+
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+}
+
+model Size {
+  id          String        @id @default(cuid())
+  label       String        @unique
+  ProductSize ProductSize[]
+}
+
+model ProductSize {
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+
+  size   Size   @relation(fields: [sizeId], references: [id], onDelete: Cascade)
+  sizeId String
+
+  order Int @default(0)
+
+  @@id([productId, sizeId])
+}
+
+/**
+ * ---------- ORDERS ----------
+ */
+
+enum OrderStatus {
+  created
+  pending
+  paid
+  failed
+  cancelled
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  items       OrderItem[]
+  totalAmount Float
+  status      String      @default("pending")
+  address     String?
+  phone       String?
+  rzpOrderId  String?  @unique
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+}
+
+
+/**
+ * ---------- USERS ----------
+ */
+
+model User {
+  id            String  @id @default(cuid())
+  email         String  @unique
+  emailVerified Boolean @default(false)
+  phoneVerified Boolean @default(false) // 👈 REQUIRED for your update call
+  name          String?
+  image         String?
+
+  // --- your custom fields (keep/add as needed) ---
+  firstName    String?
+  lastName     String?
+  phone        String?
+  avatarUrl    String?
+  bio          String?
+  tier         String?
+  passwordHash String // for credentials users
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // --- relations ---
+  addresses Address[] // you already had this
+  accounts  Account[] // required by Auth.js adapter
+  sessions  Session[] // required by Auth.js adapter
+  orders         Order[]
+  wishlist       Wishlist[]
+}
+
+model Address {
+  id         String   @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  line1      String
+  line2      String?
+  city       String
+  state      String
+  postalCode String
+  country    String   @default("India")
+  isDefault  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Wishlist {
+  id        String   @id @default(cuid())
+  item      String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
