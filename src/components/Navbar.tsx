@@ -163,7 +163,7 @@ const toggleMobile = (k: keyof typeof mExpand) =>
     onMouseLeave={() => setOpenKey(null)}>
       <div className="container h-14 flex items-center justify-between relative">
         {/* Left: categories (removed onMouseLeave that was closing too aggressively) */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+        <nav className="hidden md:flex items-center gap-16 text-sm font-medium">
           <DropTrigger
             label="Women"
             href="/shop?cat=women"
@@ -191,12 +191,12 @@ const toggleMobile = (k: keyof typeof mExpand) =>
         {/* Center: Logo */}
         <div className="h-6 absolute left-1/2 -translate-x-1/2">
           <Link href="/" aria-label="Venusa Home">
-            <Logo className="h-5 md:h-6 text-lg" />
+            <Logo className="h-5 md:h-6 text-xl" />
           </Link>
         </div>
 
         {/* Right: icons */}
-        <div className="hidden md:flex items-center gap-5" >
+        <div className="hidden md:flex items-center gap-6" >
         <Link
             id="__openSearch__"
             href="/search"
