@@ -28,7 +28,7 @@ export default function AccountSettingsPage() {
 
     async function fetchUser() {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/user/", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/user/`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (!res.ok) throw new Error("Failed to fetch user data")

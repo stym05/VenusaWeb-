@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default async function ShopPage() {
   // 🖤 Use the same internal API route as HomePage (currency injected there)
   const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.NEXT_PUBLIC_API_URL ||
     process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
       : "http://localhost:3000"
@@ -21,7 +21,7 @@ export default async function ShopPage() {
   let allProducts: Product[] = []
 
   try {
-    const res = await fetch(`${baseUrl}/api/products`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
       next: { revalidate: 60 },
     })
 

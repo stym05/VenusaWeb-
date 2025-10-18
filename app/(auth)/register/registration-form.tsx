@@ -4,9 +4,6 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
 import { signupUser, verifyUserOtp } from "@/lib/api"
 
 const Step1Schema = z.object({
@@ -30,7 +27,6 @@ export default function RegistrationForm() {
     defaultValues: { name: "", email: "", phone: "", password: "" },
   })
 
-  // Step 1: Send OTP
   async function onSubmit(values: Step1Values) {
     setLoading(true)
     setError(null)
@@ -51,7 +47,6 @@ export default function RegistrationForm() {
     }
   }
 
-  // Step 2: Verify OTP
   async function handleVerify() {
     setLoading(true)
     setError(null)
@@ -70,49 +65,51 @@ export default function RegistrationForm() {
     }
   }
 
+  // Shared input style
+  const inputStyle =
+    "w-full rounded-xl border border-gray-200 bg-gray-50 px-5 py-3.5 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-black focus:ring-2 focus:ring-black/20 outline-none transition"
+
   // OTP View
   if (otpMode) {
     return (
-      <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-gray-50 to-gray-100 px-6">
-        <div className="w-full max-w-md rounded-3xl bg-white p-12 shadow-2xl ring-1 ring-gray-100">
-          <h1 className="text-3xl font-light text-gray-900 tracking-tight text-center">
+      <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 via-white to-gray-100 px-5">
+        <div className="w-full max-w-md rounded-3xl bg-white p-8 sm:p-10 shadow-2xl ring-1 ring-gray-100">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 tracking-tight text-center">
             Verify OTP
           </h1>
           <p className="mt-3 text-center text-sm text-gray-500">
-            Code sent to <span className="font-medium">{phone}</span>
+            Code sent to <span className="font-medium text-gray-900">{phone}</span>
           </p>
 
-          <div className="mt-8">
-            <Label htmlFor="otp" className="text-sm text-gray-700">Enter OTP</Label>
-            <Input
-              id="otp"
+          <div className="mt-8 space-y-5">
+            <label className="text-sm font-medium text-gray-700">Enter OTP</label>
+            <input
               value={otp}
               onChange={e => setOtp(e.target.value)}
               placeholder="123456"
-              className="mt-2 w-full rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-black focus:ring-2 focus:ring-black/20 outline-none transition"
+              className={inputStyle}
             />
-          </div>
 
-          {error && <p className="mt-3 text-sm text-red-500">{error}</p>}
-          {success && <p className="mt-3 text-sm text-green-600">{success}</p>}
+            {error && <p className="text-sm text-red-500">{error}</p>}
+            {success && <p className="text-sm text-green-600">{success}</p>}
 
-          <div className="mt-6 flex flex-col sm:flex-row gap-3">
-            <Button
-              disabled={loading || otp.length < 4}
-              onClick={handleVerify}
-              className="w-full rounded-2xl bg-black px-5 py-4 text-sm font-medium text-white shadow-lg transition hover:bg-gray-900"
-            >
-              {loading ? "Verifying..." : "Verify & Continue"}
-            </Button>
-            <Button
-              variant="outline"
-              type="button"
-              disabled={loading}
-              onClick={() => onSubmit(form.getValues())}
-              className="w-full rounded-2xl border border-gray-300 bg-white text-gray-800 hover:bg-gray-50"
-            >
-              Resend OTP
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-3 mt-4">
+              <button
+                disabled={loading || otp.length < 4}
+                onClick={handleVerify}
+                className="w-full rounded-xl bg-black px-5 py-3.5 text-sm font-medium text-white shadow-md hover:bg-neutral-900 transition"
+              >
+                {loading ? "Verifying..." : "Verify & Continue"}
+              </button>
+              <button
+                type="button"
+                disabled={loading}
+                onClick={() => onSubmit(form.getValues())}
+                className="w-full rounded-xl border border-gray-300 bg-white text-gray-800 hover:bg-gray-50 transition"
+              >
+                Resend OTP
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -121,21 +118,21 @@ export default function RegistrationForm() {
 
   // Step 1 View
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-gray-50 to-gray-100 px-6">
-      <div className="w-full max-w-md rounded-3xl bg-white p-12 shadow-2xl ring-1 ring-gray-100">
+    <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 via-white to-gray-100 px-5">
+      <div className="w-full max-w-md rounded-3xl bg-white p-8 sm:p-10 shadow-2xl ring-1 ring-gray-100">
         {/* Header */}
-        {/*<h1 className="text-4xl font-light text-gray-900 tracking-tight text-center">
+        <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 tracking-tight text-center">
           Create Account
         </h1>
         <p className="mt-3 text-center text-sm text-gray-500">
-          Welcome to VENUSA — your journey starts here.
-        </p>*/}
+          Join VENUSA — where confidence meets design.
+        </p>
 
         {/* Form */}
-        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-10 space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-10 space-y-5 sm:space-y-6">
           <div>
             <input
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-black focus:ring-2 focus:ring-black/20 outline-none transition"
+              className={inputStyle}
               placeholder="Full name"
               {...form.register("name")}
             />
@@ -146,7 +143,7 @@ export default function RegistrationForm() {
 
           <div>
             <input
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-black focus:ring-2 focus:ring-black/20 outline-none transition"
+              className={inputStyle}
               placeholder="Email address"
               type="email"
               {...form.register("email")}
@@ -158,7 +155,7 @@ export default function RegistrationForm() {
 
           <div>
             <input
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-black focus:ring-2 focus:ring-black/20 outline-none transition"
+              className={inputStyle}
               placeholder="Phone (with country code)"
               {...form.register("phone")}
             />
@@ -169,7 +166,7 @@ export default function RegistrationForm() {
 
           <div>
             <input
-              className="w-full rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 text-sm text-gray-900 placeholder-gray-400 shadow-sm focus:border-black focus:ring-2 focus:ring-black/20 outline-none transition"
+              className={inputStyle}
               placeholder="Password"
               type="password"
               {...form.register("password")}
@@ -185,7 +182,7 @@ export default function RegistrationForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-2xl bg-black px-5 py-4 text-sm font-medium text-white shadow-lg transition hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-black/30"
+            className="w-full rounded-xl bg-black px-5 py-3.5 text-sm font-medium text-white shadow-md hover:bg-neutral-900 focus:ring-2 focus:ring-black/30 transition"
           >
             {loading ? "Creating..." : "Continue"}
           </button>
