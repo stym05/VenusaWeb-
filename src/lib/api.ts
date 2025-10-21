@@ -1,10 +1,15 @@
+// ✅ Global base URL for all API calls
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
+
+
 export async function signupUser(values: {
   name: string
   email: string
   phone: string
   password: string
 }) {
-  const res = await fetch("http://127.0.0.1:8000/api/signup/", {
+  const res = await fetch(`${BASE_URL}/api/signup/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -18,7 +23,7 @@ export async function signupUser(values: {
 }
 
 export async function verifyUserOtp(phone: string, otp: string) {
-  const res = await fetch("http://127.0.0.1:8000/api/verify/", {
+  const res = await fetch(`${BASE_URL}/api/verify/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ phone, otp }),
@@ -27,19 +32,16 @@ export async function verifyUserOtp(phone: string, otp: string) {
 }
 
 export async function loginWithBackend(email: string, password: string) {
-  const res = await fetch("http://127.0.0.1:8000/api/login/", {
+  const res = await fetch(`${BASE_URL}/api/login/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      username: email, // Django uses "username" key
+      username: email,
       password,
     }),
   })
   return res.json()
 }
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000"
-
 
 export async function requestPasswordReset(identifier: string) {
   const res = await fetch(`${BASE_URL}/api/request-reset/`, {
@@ -47,7 +49,7 @@ export async function requestPasswordReset(identifier: string) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email: identifier }),
   })
-  return await res.json()
+  return res.json()
 }
 
 export async function resetPassword(identifier: string, otp: string, newPassword: string) {
@@ -56,10 +58,10 @@ export async function resetPassword(identifier: string, otp: string, newPassword
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email: identifier, otp, new_password: newPassword }),
   })
-  return await res.json()
+  return res.json()
 }
 
 export async function getProducts() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/`);
-  return res.json();
+  const res = await fetch(`${BASE_URL}/api/products/`)
+  return res.json()
 }
