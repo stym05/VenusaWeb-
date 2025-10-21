@@ -2,7 +2,8 @@ import type { Metadata } from "next"
 import ShopView from "./ShopView"
 import type { Product } from "@/lib/products"
 
-export const revalidate = 60
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Shop | VENUSA",
@@ -21,9 +22,8 @@ export default async function ShopPage() {
   let allProducts: Product[] = []
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
-      next: { revalidate: 60 },
-    })
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/`, { cache: 'no-store' })
+
 
     if (!res.ok) {
       console.error("❌ Failed to fetch products:", res.statusText)
